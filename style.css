@@ -35,7 +35,8 @@ body {
 .icon,
 .bottom-content,
 .settings .menu li,
-.content header{
+.content header,
+.popup{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -136,18 +137,27 @@ body {
     width: 100%;
     top: 0;
     left:0;
+    z-index: 2;
     background: rgba(0, 0, 0, 0.4);
 }
 .popup-box .popup{
     position: absolute;
     top: 50%;
     left: 50%;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     max-width:400px;
     transform: translate(-50%, -50%);
+    justify-content: center;
+   
+}
+/* Self-note [Review] */
+.popup-box,.popup-box .popup{
+    opacity:0;
+    pointer-events: none;
 }
 .popup .content{
+    width: calc(100% - 15px);
     background: #fff;
     border-radius: 5px;
 }
@@ -191,4 +201,18 @@ body {
  .content form textarea{
     height: 150px;
     resize: none;
+    padding:8px 15px ;
+ }
+
+ .content form button{
+    width: 100%;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: white;
+    cursor: pointer;
+    font-size: 17px;
+    border-radius: 4px;
+    background: var(--primary-color);
+
  }
