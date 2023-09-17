@@ -67,6 +67,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
 }
+.note .detail{
+  max-height:165px;
+  overflow-y: auto ;
+}
 .note p {
   font-size: 22px;
   font-weight: 500;

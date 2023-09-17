@@ -80,6 +80,8 @@ function updateNote(noteId, title , desc){
 
 // Delete
 function deleteNote(noteId){
+  let confirmDel = confirm("Are you sure you want to delete this note");
+  if(!confirmDel) return;
   notes.splice(noteId,1);
   localStorage.setItem("notes", JSON.stringify(notes));
 };
