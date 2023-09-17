@@ -1,5 +1,6 @@
 const addBox = document.querySelector(".add-box");
 const popupBox = document.querySelector(".popup-box");
+const popupTitle = popupBox.querySelector("header p");
 const closeIcon = popupBox.querySelector("header i");
 const titleTag = popupBox.querySelector("input");
 const descTag = popupBox.querySelector("textarea");
@@ -20,17 +21,22 @@ let months = [
   "December",
 ];
 
+let  isUpdate = false, updateId;
 // getting localStorage notes if exist and parsing them
 // to JS object else passing an empty array
 const notes = JSON.parse(localStorage.getItem("notes") || "[]");
 
 // Open and close the notes popup
 addBox.addEventListener("click", () => {
+  titleTag.focus();
   popupBox.classList.add("show");
 });
 closeIcon.addEventListener("click", () => {
+  isUpdate = false;
   titleTag.value = '';
   descTag.value ='';
+  addBtn.innerText = "Add Note"
+  popupTitle.innerText = "Add a new Note"
   popupBox.classList.remove("show");
 });
 
@@ -48,7 +54,7 @@ function showNotes() {
                       <div class="settings">
                         <i onclick='showMenu(this)' class="uil uil-ellipsis-h"></i>
                         <ul class="menu">
-                          <li onclick="updateNote()"<i class="uil uil-pen">Edit</i></li>
+                          <li onclick="updateNote(${index},'${note.title}','${note.description}')"<i class="uil uil-pen">Edit</i></li>
                           <li onclick="deleteNote(${index})"><i class="uil uil-trash">Delete</i></li>
                         </ul>
                       </div>
@@ -61,8 +67,15 @@ function showNotes() {
 
 
 // Update
-function updateNote(noteId){
-
+function updateNote(noteId, title , desc){
+  updateId = noteId;
+  isUpdate = true;
+  addBox.click();
+  titleTag.value = title;
+  descTag.value = desc;
+  addBtn.innerText = "Update Note"
+  popupTitle.innerText = "Update This Note"
+  console.log(noteId, title , desc);
 }
 
 // Delete
@@ -103,14 +116,16 @@ addBtn.addEventListener("click", (e) => {
       description: noteDesc,
       date: `${month} ${day} ${year}`,
     };
+   
+
     let notes = JSON.parse(localStorage.getItem("notes"));
-    if (!notes) {
-      notes = [noteInfo];
-    } else {
-      notes = [...notes, noteInfo];
+    if(!isUpdate){
+      notes.push(noteInfo);
+    }else {
+      notes[updateId] = noteInfo;
     }
     localStorage.setItem("notes", JSON.stringify(notes));
     closeIcon.click();
-    showNotes();
+    showNotes(); 
   }
 });
