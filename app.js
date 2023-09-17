@@ -29,11 +29,14 @@ addBox.addEventListener("click", () => {
   popupBox.classList.add("show");
 });
 closeIcon.addEventListener("click", () => {
+  titleTag.value = '';
+  descTag.value ='';
   popupBox.classList.remove("show");
 });
 
 // Show the notes
 function showNotes() {
+  document.querySelectorAll(".note").forEach(note => note.remove());
   notes.forEach((note) => {
     let liTag = `<li class="note">
                     <div class="details">
@@ -41,9 +44,9 @@ function showNotes() {
                       <span>${note.description}</span>
                     </div>
                     <div class="bottom-content">
-                      <span>September 3, 2023</span>
+                      <span>${note.date}</span>
                       <div class="settings">
-                        <i class="uil uil-ellipsis-h"></i>
+                        <i onclick='showMenu(this)' class="uil uil-ellipsis-h"></i>
                         <ul class="menu">
                           <li><i class="uil uil-pen">Edit</i></li>
                           <li><i class="uil uil-trash">Delete</i></li>
@@ -55,7 +58,16 @@ function showNotes() {
   });
   
 }
+showNotes(); 
 
+function showMenu(elem){
+  elem.parentElement.classList.add("show");
+  document.addEventListener("click", e =>{
+    if(e.target.tagName != "I" || e.target != elem){
+      elem.parentElement.classList.remove('show')
+    }
+  })
+};
 
 // add note button functionality
 
@@ -66,15 +78,14 @@ addBtn.addEventListener("click", (e) => {
     noteDesc = descTag.value;
   if (noteTitle || noteDesc) {
     // here we get the month,day,year from the current date
-    let dateObj = new Date();
-    month = months[dateObj.getMonth()];
-    day = dateObj.getDay();
+    let dateObj = new Date(),
+    month = months[dateObj.getMonth()],
+    day = dateObj.getDay(),
     year = dateObj.getFullYear();
 
     let noteInfo = {
       title: noteTitle,
       description: noteDesc,
-
       date: `${month} ${day} ${year}`,
     };
     let notes = JSON.parse(localStorage.getItem("notes"));

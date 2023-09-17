@@ -95,6 +95,7 @@ body {
   cursor: pointer;
 }
 .settings {
+
   position: relative;
 }
 .settings .menu{
@@ -109,8 +110,8 @@ body {
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   transition: transform 0.15s ease;
 }
-.settings:hover .menu{
-    transform: scaleX(1);
+.settings.show .menu{
+    transform: scale(1);
 }
 .settings .menu li{
   height: 25px;
@@ -125,8 +126,9 @@ body {
     background: #f5f5f5;
 }
 .menu li i{
-    padding-right: 8px;
-    
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 /* Popup Styling */
