@@ -34,10 +34,10 @@ closeIcon.addEventListener("click", () => {
   popupBox.classList.remove("show");
 });
 
-// Show the notes
+//Create
 function showNotes() {
   document.querySelectorAll(".note").forEach(note => note.remove());
-  notes.forEach((note) => {
+  notes.forEach((note,index) => {
     let liTag = `<li class="note">
                     <div class="details">
                       <p>${note.title}</p>
@@ -48,8 +48,8 @@ function showNotes() {
                       <div class="settings">
                         <i onclick='showMenu(this)' class="uil uil-ellipsis-h"></i>
                         <ul class="menu">
-                          <li><i class="uil uil-pen">Edit</i></li>
-                          <li><i class="uil uil-trash">Delete</i></li>
+                          <li onclick="updateNote()"<i class="uil uil-pen">Edit</i></li>
+                          <li onclick="deleteNote(${index})"><i class="uil uil-trash">Delete</i></li>
                         </ul>
                       </div>
                     </div>
@@ -57,7 +57,20 @@ function showNotes() {
   addBox.insertAdjacentHTML("afterend", liTag);
   });
   
+};
+
+
+// Update
+function updateNote(noteId){
+
 }
+
+// Delete
+function deleteNote(noteId){
+  notes.splice(noteId,1);
+  localStorage.setItem("notes", JSON.stringify(notes));
+};
+
 showNotes(); 
 
 function showMenu(elem){
@@ -68,6 +81,8 @@ function showMenu(elem){
     }
   })
 };
+
+showNotes();
 
 // add note button functionality
 
