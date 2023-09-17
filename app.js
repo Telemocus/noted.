@@ -5,7 +5,7 @@ const titleTag = popupBox.querySelector("input");
 const descTag = popupBox.querySelector("textarea");
 const addBtn = popupBox.querySelector("button");
 
-const months = [
+let months = [
   "January",
   "February",
   "March",
@@ -20,6 +20,10 @@ const months = [
   "December",
 ];
 
+// getting localStorage notes if exist and parsing them
+// to JS object else passing an empty array
+const notes = JSON.parse(localStorage.getItem("notes") || "[]");
+
 // Open and close the notes popup
 addBox.addEventListener("click", () => {
   popupBox.classList.add("show");
@@ -27,6 +31,31 @@ addBox.addEventListener("click", () => {
 closeIcon.addEventListener("click", () => {
   popupBox.classList.remove("show");
 });
+
+// Show the notes
+function showNotes() {
+  notes.forEach((note) => {
+    let liTag = `<li class="note">
+                    <div class="details">
+                      <p>${note.title}</p>
+                      <span>${note.description}</span>
+                    </div>
+                    <div class="bottom-content">
+                      <span>September 3, 2023</span>
+                      <div class="settings">
+                        <i class="uil uil-ellipsis-h"></i>
+                        <ul class="menu">
+                          <li><i class="uil uil-pen">Edit</i></li>
+                          <li><i class="uil uil-trash">Delete</i></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>`;
+  addBox.insertAdjacentHTML("afterend", liTag);
+  });
+  
+}
+
 
 // add note button functionality
 
@@ -41,15 +70,21 @@ addBtn.addEventListener("click", (e) => {
     month = months[dateObj.getMonth()];
     day = dateObj.getDay();
     year = dateObj.getFullYear();
-    console.log(month, day, year);
 
     let noteInfo = {
-        title: noteTitle, description: noteDesc,
+      title: noteTitle,
+      description: noteDesc,
 
-        date: `${month} ${day} ${year}`
+      date: `${month} ${day} ${year}`,
+    };
+    let notes = JSON.parse(localStorage.getItem("notes"));
+    if (!notes) {
+      notes = [noteInfo];
+    } else {
+      notes = [...notes, noteInfo];
     }
-    const notes = [];
-
-    
+    localStorage.setItem("notes", JSON.stringify(notes));
+    closeIcon.click();
+    showNotes();
   }
 });
